@@ -66,12 +66,23 @@ trainer = Trainer(
 
 st.write('## Hugging Face')
 
-st.write('Copy & paste or write the text in the box below.\n Please note that the text gets processed\n in chunks of 512 characters and will take\n increasingly more time depending on the length.')
-process_text = st.text_area('process_text',) #height=500) #max_chars=512
-st.write('The length of the text to process is:', len(process_text))
-st.write('That corresponds to:', len(process_text)//512 + 1, 'chunks to be processed')
+st.write("""
+    Copy & paste or write the text in the box below. Please note that the text gets processed in chunks of 512 tokens, which amounts to about 2500 characters (400 words). Because this is an approximation, there may be some text cut off at the end of each 2500 character set.
+    
+    It will take increasingly more time depending on the length of the text prompt.
+    """
+)
+         
+process_text = st.text_area('process_text')
 
-# this next function to split the text into chunks of 512
+if len(process_text) % 2500 != 0:
+    st.write('The length of the text to process is', len(process_text), 'which corresponds to:', len(process_text) // 2500 + 1, 'chunks')
+else:
+    st.write('The length of the text to process is', len(process_text), 'which corresponds to:', len(process_text) // 2500, 'chunks')
+
+st.divider()
+
+# this next function to split the text into chunks of 2500
 def chunkstring(string, length):
     return (string[0+i:length+i] for i in range(0, len(string), length))
 
@@ -80,10 +91,10 @@ def compute_winners(model_predictions):
 
     unique_authors = [num_to_authors[unique] for unique in unique_num]
 
-    return pd.DataFrame({'most likely author': unique_authors, 'number of times':counts})
+    return pd.DataFrame({'Most Likely Author': unique_authors, 'Number of Chunks':counts})
 
 if process_text != '':
-    serialized_text = pd.Series(chunkstring(process_text, 512))
+    serialized_text = pd.Series(chunkstring(process_text, 2500))
 
     newtext_ds = Dataset.from_dict({'text': serialized_text})
     tokenized_newtext_ds= newtext_ds.map(tokenize_function)
@@ -93,8 +104,11 @@ if process_text != '':
     new_results = trainer.predict(tokenized_newtext_ds) 
 
     # calculate who "wins" over chunks
+
+    st.write('These are the overall results:')
     author_winners = compute_winners(new_results.predictions)
     st.dataframe(author_winners)
+
 
     # calculate actual probabilities
     new_probabilities = special.softmax(new_results.predictions, axis=1)
@@ -103,15 +117,14 @@ if process_text != '':
     new_probabilities_df = pd.DataFrame(new_probabilities, columns=select_authors).T
 
     for i, column in enumerate(new_probabilities_df):
-        with st.expander(f'Chunk number {column}'):
-            col1, col2 = st.columns([1,2])
-            with col1:
-                #st.dataframe(new_probabilities_df[[column]].sort_values(column, ascending=False).head())
-                st.dataframe(new_probabilities_df[column].sort_values(ascending=False).head().map('{:.2%}'.format))
-            with col2:
-                st.write('Processed Chunk Text:')
-                st.write(f'{serialized_text.iloc[i]}')
+        with st.expander(f'Chunk number {column +1}'):
+            st.dataframe(new_probabilities_df[column].sort_values(ascending=False).head(7).rename('Likelihood').map('{:.2%}'.format))
+            st.write('Processed Text Chunk:')
+            st.write(f'{serialized_text.iloc[i]}')
 
-    # similarity = pd.DataFrame(new_results.predictions, columns=select_authors).mean().to_frame()
-    # similarity = similarity.rename(columns={0: 'Similarity Score'}).sort_values(by='Similarity Score', ascending=False) #.head(7)
-    # st.dataframe(similarity)
+            #col3, col4 = st.columns([1,2])
+            #with col1:
+            #    st.dataframe(new_probabilities_df[column].sort_values(ascending=False).head(7).rename('Likelihood').map('{:.2%}'.format))
+            #with col2:
+            #    st.write('Processed Text Chunk:')
+            #    st.write(f'{serialized_text.iloc[i]}')

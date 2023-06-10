@@ -4,30 +4,31 @@ import plotly.express as px
 
 import random
 
-pielovers = ['great', 'more great', 'greater', 'more great than great', 'less great, but still more', 'the most great ever', 'there is nothing greater than a pie chart', 'pie charts are life', 'pie chart, the universe, and everything', 'mathematics in pie chart dimensions', 'pie chart for life', 'the greatest',
-             'great: the greatening']
+pielovers = ['because', 'because because', 'because x5', 'they are greater than life', 'pie charts are less great, but still more', 'what are pie charts even', 'there is nothing greater than a pie chart', 'pie charts are life', 'pie chart, the universe, and everything', 'mathematics is just pie charts', 'pie chart for life', 'pie charts are pioneers', 'can you eat a pie chart though?']
 
 randomlist = [random.random() for i in range(len(pielovers))]
 
 df = pd.DataFrame({'category': pielovers,
                    'values': randomlist})
 
+st.write('## Thank you Nashville Software School!!')
+
+st.image("https://nashvillesoftwareschool.com/images/NSS-logo-horizontal-small.jpg", use_column_width='auto')
+
 st.markdown(
     """
-    This page is here just to say **thank you** to everyone at Nashville Software School.
+    This page is an acknowledgment and thank you to everyone at Nashville Software School. I can only imagine how much work got put into making this opportunity possible. From program developers to the marketing team, from everyone I had the pleasure of meeting virtually, to those that I didn't.
 
-    In my view, teachers and professors often don't receive enough credit for the tremendous work that they are doing.
+    In particular though, what would a school be without teachers? So thank you, **Michael Holloway**, our instructor extraodrinaire and our two wonderful TAs, **Rohit Venkat** and **Neda Taherkhani**. This has been an incredible, interesting and fun 9 months under your guidance.
+    
+    And finally, thank you to my awesome 15 classmates too. A classroom is only as alive as the people in it and I've had a bunch of good conversations, bouncing of ideas and discussions with many of you.
 
-    Thank you, **Michael Holloway**, our instructor extraodrinaire and our two wonderful TAs, **Rohit Venkat** and **Neda Taherkhani**.
-
-    This has been an incredible, interesting and fun 9 months. Thank you for all your patience and for sharing the knowledge.
-
-    And to showcase my gratitude, here's showing just how much I learned! Here is **the best** graph kind that exists - a pie chart. Just for you, Michael! 
+    To showcase my gratitude, and the depth of my obtained knowledge, here is **the best** graph kind that exists. A pie chart - just for you, Michael! 
 """
 )
 
 
-fig = px.pie(df, title='How great are pie charts, really?',
+fig = px.pie(df, title='Why are pie charts the best?',
              values='values', names='category',
              width=800, height=800,
              color_discrete_sequence=px.colors.sequential.RdBu)
