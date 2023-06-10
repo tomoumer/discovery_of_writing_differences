@@ -5,6 +5,7 @@ import pandas as pd
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, TrainingArguments, Trainer
 from datasets import Dataset
 import evaluate
+from scipy import special
 
 import os
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
@@ -88,14 +89,29 @@ if process_text != '':
     tokenized_newtext_ds= newtext_ds.map(tokenize_function)
     tokenized_newtext_ds = tokenized_newtext_ds.remove_columns(['text'])
 
+    # get predictions
     new_results = trainer.predict(tokenized_newtext_ds) 
 
+    # calculate who "wins" over chunks
     author_winners = compute_winners(new_results.predictions)
-
     st.dataframe(author_winners)
 
-    similarity = pd.DataFrame(new_results.predictions, columns=select_authors).mean().to_frame()
+    # calculate actual probabilities
+    new_probabilities = special.softmax(new_results.predictions, axis=1)
 
-    similarity = similarity.rename(columns={0: 'Similarity Score'}).sort_values(by='Similarity Score', ascending=False) #.head(7)
+    # get probabilities and authors in a dataframe and transpose it - to be able to use .head()
+    new_probabilities_df = pd.DataFrame(new_probabilities, columns=select_authors).T
 
-    st.dataframe(similarity)
+    for i, column in enumerate(new_probabilities_df):
+        with st.expander(f'Chunk number {column}'):
+            col1, col2 = st.columns([1,2])
+            with col1:
+                #st.dataframe(new_probabilities_df[[column]].sort_values(column, ascending=False).head())
+                st.dataframe(new_probabilities_df[column].sort_values(ascending=False).head().map('{:.2%}'.format))
+            with col2:
+                st.write('Processed Chunk Text:')
+                st.write(f'{serialized_text.iloc[i]}')
+
+    # similarity = pd.DataFrame(new_results.predictions, columns=select_authors).mean().to_frame()
+    # similarity = similarity.rename(columns={0: 'Similarity Score'}).sort_values(by='Similarity Score', ascending=False) #.head(7)
+    # st.dataframe(similarity)
