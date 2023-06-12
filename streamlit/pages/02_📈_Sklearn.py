@@ -30,18 +30,21 @@ st.write('## Sklearn')
 
 st.markdown(
         """
-            Unfortunately, in order to produce decent results, the TfidfVectorizer (plus the  MLPClassifier) took about 2gb of space to save! So below is just a 2d projection of the 100-dimensional weights of the hidden layer of the MLPClassifier.
+            Storing the TfidfVectorizer (plus the  MLPClassifier) took about 2gb of space, so I couldn't incorporate it into the app.
+            
+            Below is just a 2d projection of the 100-dimensional weights of the hidden layer of the MLPClassifier.
         """
     )
 
-author_choice = st.multiselect('Choose the authors',
-                                   options=library_select['author'].unique(),
-                                   default=library_select['author'].unique()
-                                   )
+with st.expander('Plot Settings'):
+    author_choice = st.multiselect('Choose the authors',
+                                    options=library_select['author'].unique(),
+                                    default=library_select['author'].unique()
+                                    )
 
-color_choice = st.radio(
-    'Choose how to color the books:',
-    ('By Author', 'By Century'))
+    color_choice = st.radio(
+        'Choose how to color the books:',
+        ('By Author', 'By Century'))
 
 
 fig = px.scatter(data_frame = library_select.loc[library_select['author'].isin(author_choice)],
