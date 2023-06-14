@@ -1,12 +1,12 @@
 # Discovery of Writing Differences
 
-In this capstone project for Data Science 6th cohort of Nashville Software School my aim is to explore differences in writing between different authors.
+In this capstone project for the 6th cohort Data Science bootcamp, as part of the Nashville Software School, my aim was to explore differences in writing between different authors.
 
 ## Executive Summary
 
-When it comes writing, there are two major characteristics that can help us understand which works we will enjoy reading (next): one is the themes/topics explored and another one is the writing style. In this capstone project my aim is to explore the unique writing differences between authors. Using [Project Gutenberg](https://www.gutenberg.org)’s extensive library as a starting point I will first focus on [topic modeling](https://arxiv.org/pdf/2103.00498.pdf) and then attempt to use a more recent [stylometric approach](https://aclanthology.org/2020.wnut-1.30.pdf).
+When it comes writing, there are two major characteristics that can help us understand which works we will enjoy reading (next): one is the themes/topics explored and another one is the writing style. In this capstone project my aim is to explore the unique writing differences between authors. Using [Project Gutenberg](https://www.gutenberg.org)’s extensive library as a starting point and loosely following the [stylometric approach](https://aclanthology.org/2020.wnut-1.30.pdf).
 
-There are several problems that I foresee having to deal with. First off, I am limited by the books that available on Project Gutenberg for free. Secondly, there will be hardware limitations and considerations when it comes to training the model and making predictions. I will mostly deal with this by starting small (with only a few authors) and then expanding. Lastly, both when it comes to topics and writing styles, there are authors that change significantly during their careers and might not be suitable for training.
+The biggest limitations of the project were computing power and time. In particular, when it comes to Gutenberg Books, there were a number of issues that I encountered - such as, sometimes text not being encoded properly, or authors names themselves appearing within the text body. When it comes to computational power, I was able to use my laptop for the first part of the project and then [Google Colab](https://colab.research.google.com) when requiring the use of GPUs.
 
 ## Motivation
 
@@ -18,9 +18,8 @@ With tools available nowadays, machine learning in particular, it seemed like a 
 
 ## Data Question
 
-Identify unique characteristics of both the theme and writing style for a select few authors (TBD) and compare that to other works. Using these two papers as a starting point:
+Identify unique characteristics of both the theme and writing style for a select few authors (TBD) and compare that to other works. Using this paper as a starting point:
 
-- [topic modelling](https://arxiv.org/pdf/2103.00498.pdf)
 - [stylometric approach](https://aclanthology.org/2020.wnut-1.30.pdf)
 
 ## Minimum Viable Product

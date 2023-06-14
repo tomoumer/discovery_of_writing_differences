@@ -7,15 +7,13 @@ from datasets import Dataset
 import evaluate
 from scipy import special
 
-import os
-os.environ["TOKENIZERS_PARALLELISM"] = "false"
+#import os
+#os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
 
 authors_df = pd.read_pickle('../data/select_authors.pkl')
 
-select_authors = list(authors_df.sort_values(by=['authorcentury','author_num'])['author'])
-authors_to_num = {select_authors[i]: i for i in range(len(select_authors))}
-num_to_authors = {v: k for k, v in authors_to_num.items()}
-
+select_authors = authors_df['author'].to_list()
 
 checkpoint = 'bert-base-uncased'
 
@@ -54,7 +52,8 @@ test_args = TrainingArguments(
     output_dir= '../models/bert_base_uncased/fivebooks_tenparts/',
     do_train=False,
     do_predict=True,
-    per_device_eval_batch_size=4
+    per_device_eval_batch_size=4,
+    use_mps_device=True
 )
 
 trainer = Trainer(
@@ -67,18 +66,19 @@ trainer = Trainer(
 st.write('## Hugging Face')
 
 st.write("""
-    Copy & paste or write the text in the box below. Please note that the text gets processed in chunks of 512 tokens, which amounts to about 2500 characters (400 words). Because this is an approximation, there may be some text cut off at the end of each 2500 character set.
-    
-    It will take increasingly more time depending on the length of the text prompt.
+    - Copy & paste or write the text in the box below
+    - The text gets processed in chunks of 512 tokens (about 2500 characters or 400 words)
+    - There may be some text cut off at the end of each 2500 character set
+    - It will take increasingly more time depending on the length of the text prompt.
     """
 )
          
-process_text = st.text_area('process_text')
+process_text_hf = st.text_area('Text to Process')
 
-if len(process_text) % 2500 != 0:
-    st.write('The length of the text to process is', len(process_text), 'which corresponds to:', len(process_text) // 2500 + 1, 'chunks')
+if len(process_text_hf) % 2500 != 0:
+    st.write('The length of the text to process is', len(process_text_hf), 'which corresponds to:', len(process_text_hf) // 2500 + 1, 'chunks')
 else:
-    st.write('The length of the text to process is', len(process_text), 'which corresponds to:', len(process_text) // 2500, 'chunks')
+    st.write('The length of the text to process is', len(process_text_hf), 'which corresponds to:', len(process_text_hf) // 2500, 'chunks')
 
 st.divider()
 
@@ -89,12 +89,12 @@ def chunkstring(string, length):
 def compute_winners(model_predictions):
     unique_num, counts = np.unique(model_predictions.argmax(axis=1), return_counts=True)
 
-    unique_authors = [num_to_authors[unique] for unique in unique_num]
+    unique_authors = [authors_df.loc[authors_df['author_num'] == unique, 'author'].iloc[0] for unique in unique_num]
 
     return pd.DataFrame({'Most Likely Author': unique_authors, 'Number of Chunks':counts})
 
-if process_text != '':
-    serialized_text = pd.Series(chunkstring(process_text, 2500))
+if process_text_hf != '':
+    serialized_text = pd.Series(chunkstring(process_text_hf, 2500))
 
     newtext_ds = Dataset.from_dict({'text': serialized_text})
     tokenized_newtext_ds= newtext_ds.map(tokenize_function)

@@ -243,8 +243,10 @@ with tab5:
             )
             ```
             
-            1. TfidfVectorizer splits the text into words or couples of words (unigrams and bigrams), requiring each to appear in at least two documents, but not more than half. First the CountVectorizer turns the words into vectors (bag of words) and then, the TfidfTransformer normalizes those counts accross documents
-            2. Scale feature by its maximum absolute value (helps the algorithm converge much faster)
+            1. TfidfVectorizer splits the text into words or couples of words (unigrams and bigrams)
+                - CountVectorizer turns the words into vectors (bag of words)
+                - TfidfTransformer normalizes the word counts accross documents
+            2. Scale feature by its maximum absolute value (helps the ml algorithm converge faster)
             3. At first I used a logistic regression to test and then passed on to MLPClassifier with two hidden layers of 100 nodes each
 
             After the model was trained:
