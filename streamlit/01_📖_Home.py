@@ -5,10 +5,16 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import plotly.express as px
 import pickle
+from sklearn.metrics import confusion_matrix, classification_report
 
 authors_df = pd.read_pickle('../data/select_authors.pkl')
 library_en = pd.read_pickle('../data/library_en.pkl')
-authors_pg_links = ''
+
+with open('../data/nn_testppred.pkl', 'rb') as f:
+    y_test, y_pred = pickle.load(f)
+
+with open('../data/hf_testppred.pkl', 'rb') as f:
+    y_test_hf, y_pred_hf, metrics_hf = pickle.load(f)
 
 authors_pg_links = ''
 
@@ -226,8 +232,12 @@ with tab4:
 #with st.expander('The Methodology'):
 with tab5:
     st.markdown(
-        """
-            I was able to use two distinct libraries for this project, [scikit-learn](https://scikit-learn.org/stable/) and then [Hugging Face](https://huggingface.co).
+        f"""
+            I was able to use two distinct libraries for this project:
+            - [scikit-learn](https://scikit-learn.org/stable/)
+            - [Hugging Face](https://huggingface.co)
+
+            The overall approach is similar. Convert words, or parts of words, into a numeric representation and then train a neural network to recognize that for different authors.
 
             ### Scikit-Learn
 
@@ -236,34 +246,81 @@ with tab5:
             ```
             pipe_nn = Pipeline(
                 steps = [
-                    ('vect', TfidfVectorizer(min_df=2, max_df=0.5, ngram_range=(1,2))),
+                    ('vect', TfidfVectorizer(min_df=2, max_df=0.5, ngram_range=(1,1))),
                     ('scaler', MaxAbsScaler()),
                     ('nn', MLPClassifier(verbose = True, hidden_layer_sizes = (100, 100)))
                 ]
             )
             ```
             
-            1. TfidfVectorizer splits the text into words or couples of words (unigrams and bigrams)
+            1. TfidfVectorizer splits the text into words
                 - CountVectorizer turns the words into vectors (bag of words)
                 - TfidfTransformer normalizes the word counts accross documents
-            2. Scale feature by its maximum absolute value (helps the ml algorithm converge faster)
-            3. At first I used a logistic regression to test and then passed on to MLPClassifier with two hidden layers of 100 nodes each
+                - note: bigrams don't add enough to justify the added complexity
+            2. Scale feature by its maximum absolute value (helps the nn to converge faster)
+            3. I used a logistic regression to test and then MLPClassifier with two hidden layers of 100 nodes each
 
-            After the model was trained:
+            With an 80-20 train-test split, the model obtains a decent overall f1 score ({classification_report(y_test, y_pred, output_dict=True, zero_division=0).get('accuracy')}), but struggles with authors who only have 5 books.
+        """
+    )
+
+    fig = px.imshow(confusion_matrix(y_test, y_pred),
+                width=1000,
+                height=800,
+                text_auto=True,
+                labels=dict(x='Predicted Label',
+                            y='True Label'),
+                            x=authors_df['author'],
+                            y=authors_df['author'],
+                            color_continuous_scale='Teal'
+                            )
+    fig.update(layout_coloraxis_showscale=False)
+    st.plotly_chart(fig, theme="streamlit", use_container_width=True)
+
+    st.markdown(
+        f"""
+            After verifying it worked correctly, I used all the data for training (no train-test split) and then:
             - Copy the MLPClassifier into a MLPRegressor
-            - Take only the second to last layer (last hidden layer of 100 nodes)
+            - Take the second to last layer (last hidden layer of 100 nodes)
             - Calculate distances between books or authors
             - In order to display it, used UMAP to reduce dimensionality from 100 to 2
             
-            One such representation is available under 'Sklearn' tab.
+            The process allows me to represent the authors and their books in a 2d space by using the weights obtained through training. Check the 📈 Sklearn tab on the side for a demo!
 
-            ### Hugging Face
+            ### 🤗 Hugging Face
 
-            The base idea is still similar to above. The difference is that with Hugging Face, you can start with a pretrained model which is more complex than just simple words.
+            With 🤗 Hugging Face Transformers, the starting point is a pretrained model which is more complex than above. I used [BERT Base model- uncased](https://huggingface.co/bert-base-uncased). 
 
-            Bert Base (uncased) model splits words into sub-words at times. It is limited to 512 tokens, which typically correspond to about 400 words (give or take). For this reason, to try and make things equal, I took 5 books per author and split each book into 10 parts (ignoring the beginning and end of the book).
+            The steps with this approach:
+            1. Pretrained tokenizer (from model), limited to 512 tokens
+                - I took 5 books per author and split each into 10 parts
+            2. Define model metrics (matthews correlation to choose best fit)
+            3. Define model for classifying (AutoModelForSequenceClassification)
+            4. use google collab for training, save best model
 
-            I did not have the time to look into how to take the last hidden layer for a representation like I've done previously. Still, I incorporated the saved model into this app, the 'Hugging Face' tab. It uses the weights obtained during training to best estimate who the given writing is similar to.
+            For this type of models, we need an additional split to train the model. So Train - Test split was 80-20 and then Train split further to (actual) Train - Validate 85-15. The validation scores are visible below, and the final f1 score on the test (for comparison to Sklearn) was {metrics_hf.get('test_f1')}. Comparable, with much less data and doing better overall accross all authors.
+        """
+    )
+
+    st.image('../img/hf_training.png', use_column_width='auto')
+
+    fig = px.imshow(confusion_matrix(y_test_hf, y_pred_hf),
+                width=1000,
+                height=800,
+                text_auto=True,
+                labels=dict(x='Predicted Label',
+                            y='True Label'),
+                            x=authors_df['author'],
+                            y=authors_df['author'],
+                            color_continuous_scale='Teal'
+                            )
+    fig.update(layout_coloraxis_showscale=False)
+    st.plotly_chart(fig, theme="streamlit", use_container_width=True)
+
+    st.markdown(
+
+        """
+            I did not have the time to look into how to take the last hidden layer for a representation like with Sklearn. Still, I incorporated the saved model into this app - check the 🤗 Hugging Face tab on the side for a demo.
         """
     )
 

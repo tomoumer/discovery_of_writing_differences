@@ -1,6 +1,6 @@
 # Discovery of Writing Differences
 
-In this capstone project for the 6th cohort Data Science bootcamp, as part of the Nashville Software School, my aim was to explore differences in writing between different authors.
+In this capstone project for the 6th cohort Data Science bootcamp, as part of the Nashville Software School, my aim was to explore differences in writing between different authors. Afterwards, create an app that would be able to take in any new text and compare its similarities to the existing authors.
 
 ## Executive Summary
 

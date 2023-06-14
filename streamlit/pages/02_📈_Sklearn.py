@@ -74,7 +74,7 @@ fig = px.scatter(data_frame = plot_df,
                  y='proj_1',
                  width=1200,
                  height=800,
-                 color= 'author' if color_choice == 'By Author' else 'authorcentury',
+                 color= 'author' if color_choice == 'By Author' else 'authorcentury_str',
                  color_discrete_sequence=px.colors.qualitative.Light24, #.Alphabet, #Dark24
                  hover_data=['title']
                  )

@@ -19,9 +19,13 @@ st.markdown(
     """
     This page is an acknowledgment and thank you to everyone at Nashville Software School. I can only imagine how much work got put into making this opportunity possible. From program developers to the marketing team, from everyone I had the pleasure of meeting virtually, to those that I didn't.
 
-    In particular though, what would a school be without teachers? So thank you, **Michael Holloway**, our instructor extraodrinaire and our two wonderful TAs, **Rohit Venkat** and **Neda Taherkhani**. This has been an incredible, interesting and fun 9 months under your guidance.
+    In particular though, what would a school be without teachers? So thank you:
+    - **Michael Holloway**, our instructor extraodrinaire
+    - our two wonderful TAs, **Rohit Venkat** and **Neda Taherkhani**
     
-    And finally, thank you to my awesome 15 classmates too. A classroom is only as alive as the people in it and I've had a bunch of good conversations, bouncing of ideas and discussions with many of you.
+    This has been an incredible, interesting and fun 9 months under your guidance.
+    
+    And finally, thank you to my awesome 15 classmates. A classroom is only as alive as the people in it and I've had a bunch of great conversations, exchanging of ideas and discussions with many of you.
 
     To showcase my gratitude, and the depth of my obtained knowledge, here is **the best** graph kind that exists. A pie chart - just for you, Michael! 
 """
