@@ -10,7 +10,7 @@ scikit-learn
 scipy
 plotly
 umap-learn
-"transformers[sentencepiece]"
+transformers[sentencepiece]
 datasets
 evaluate
 streamlit
