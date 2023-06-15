@@ -11,7 +11,7 @@ from scipy import special
 #os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 
-authors_df = pd.read_pickle('../data/select_authors.pkl')
+authors_df = pd.read_pickle('data/select_authors.pkl')
 
 select_authors = authors_df['author'].to_list()
 

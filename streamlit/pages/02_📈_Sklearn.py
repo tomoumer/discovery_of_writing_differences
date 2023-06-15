@@ -15,7 +15,7 @@ umap_mnist = load('../models/umap_mnist_01.joblib')
 # nn_represent_newtext = pipe_nn_encoder.predict(process_text)
 # umap_projection_newtext = umap_mnist.transform(nn_represent_newtext)
 
-library_distances2d =  pd.read_pickle('../data/library_distances2d.pkl')
+library_distances2d =  pd.read_pickle('data/library_distances2d.pkl')
 dist2d_mean = library_distances2d.iloc[0]['dist2d_mean']
 
 

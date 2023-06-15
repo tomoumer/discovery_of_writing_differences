@@ -16,7 +16,7 @@ with col1:
     )
 
 with col2:
-    st.image('../img/journal.png', use_column_width='auto')
+    st.image('img/journal.png', use_column_width='auto')
 
 st.markdown(
     """

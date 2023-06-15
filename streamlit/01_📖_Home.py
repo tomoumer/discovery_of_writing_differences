@@ -8,12 +8,12 @@ import pickle
 from sklearn.metrics import confusion_matrix, classification_report
 
 authors_df = pd.read_pickle('data/select_authors.pkl')
-library_en = pd.read_pickle('../data/library_en.pkl')
+library_en = pd.read_pickle('data/library_en.pkl')
 
-with open('../data/nn_testppred.pkl', 'rb') as f:
+with open('data/nn_testppred.pkl', 'rb') as f:
     y_test, y_pred = pickle.load(f)
 
-with open('../data/hf_testppred.pkl', 'rb') as f:
+with open('data/hf_testppred.pkl', 'rb') as f:
     y_test_hf, y_pred_hf, metrics_hf = pickle.load(f)
 
 authors_pg_links = ''
@@ -64,7 +64,7 @@ with tab1:
         """
         ) 
     with col2:
-        st.image('../img/civ1_alphabet.png', use_column_width='auto', caption="Sid Meier's Civilization")
+        st.image('img/civ1_alphabet.png', use_column_width='auto', caption="Sid Meier's Civilization")
 
     col1, col2 = st.columns([1,5])
     with col1:
@@ -88,7 +88,7 @@ with tab2:
             Some years ago as I picked up word crafting again, I was told by a friend that my writing reminds him of another author. That is something that stuck with me as fascinating, since I haven't actually read any works from that particular author (nor can I remember who it was, sorry).
         """
     )
-    st.image('../img/mybooks.png', use_column_width='auto', caption='books from my collection')
+    st.image('img/mybooks.png', use_column_width='auto', caption='books from my collection')
     
     st.markdown(
         """
@@ -227,7 +227,7 @@ with tab4:
         st.markdown(authors_pg_links)
 
     with col2:
-        st.image('../img/books_history.png', use_column_width='auto', caption='fun with Midjourney - love the double pointed pens!')
+        st.image('img/books_history.png', use_column_width='auto', caption='fun with Midjourney - love the double pointed pens!')
 
 #with st.expander('The Methodology'):
 with tab5:
@@ -302,7 +302,7 @@ with tab5:
         """
     )
 
-    st.image('../img/hf_training.png', use_column_width='auto')
+    st.image('img/hf_training.png', use_column_width='auto')
 
     fig = px.imshow(confusion_matrix(y_test_hf, y_pred_hf),
                 width=1000,
