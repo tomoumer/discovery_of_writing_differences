@@ -7,7 +7,7 @@ import plotly.express as px
 import pickle
 from sklearn.metrics import confusion_matrix, classification_report
 
-authors_df = pd.read_pickle('../data/select_authors.pkl')
+authors_df = pd.read_pickle('data/select_authors.pkl')
 library_en = pd.read_pickle('../data/library_en.pkl')
 
 with open('../data/nn_testppred.pkl', 'rb') as f:
