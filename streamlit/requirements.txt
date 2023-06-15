@@ -1,4 +1,3 @@
-python
 jupyter
 pandas
 pytorch
