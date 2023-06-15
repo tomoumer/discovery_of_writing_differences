@@ -67,7 +67,7 @@ with tab1:
         """
         ) 
     with col2:
-        st.image(path / 'img/civ1_alphabet.png', use_column_width='auto', caption="Sid Meier's Civilization")
+        st.image(str(path / 'img/civ1_alphabet.png'), use_column_width='auto', caption="Sid Meier's Civilization")
 
     col1, col2 = st.columns([1,5])
     with col1:
@@ -91,7 +91,7 @@ with tab2:
             Some years ago as I picked up word crafting again, I was told by a friend that my writing reminds him of another author. That is something that stuck with me as fascinating, since I haven't actually read any works from that particular author (nor can I remember who it was, sorry).
         """
     )
-    st.image(path / 'img/mybooks.png', use_column_width='auto', caption='books from my collection')
+    st.image(str(path / 'img/mybooks.png'), use_column_width='auto', caption='books from my collection')
     
     st.markdown(
         """
@@ -230,7 +230,7 @@ with tab4:
         st.markdown(authors_pg_links)
 
     with col2:
-        st.image(path / 'img/books_history.png', use_column_width='auto', caption='fun with Midjourney - love the double pointed pens!')
+        st.image(str(path / 'img/books_history.png'), use_column_width='auto', caption='fun with Midjourney - love the double pointed pens!')
 
 #with st.expander('The Methodology'):
 with tab5:
@@ -305,7 +305,7 @@ with tab5:
         """
     )
 
-    st.image(path / 'img/hf_training.png', use_column_width='auto')
+    st.image(str(path / 'img/hf_training.png'), use_column_width='auto')
 
     fig = px.imshow(confusion_matrix(y_test_hf, y_pred_hf),
                 width=1000,
