@@ -1,6 +1,6 @@
 jupyter
 pandas
-pytorch
+torch
 torchvision
 matplotlib
 accelerate
