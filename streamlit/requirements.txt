@@ -1,0 +1,16 @@
+jupyter
+pandas
+torch
+torchvision
+matplotlib
+accelerate
+seaborn
+scikit-learn
+scipy
+plotly
+umap-learn
+transformers[sentencepiece]
+datasets
+evaluate
+streamlit
+watchdog
