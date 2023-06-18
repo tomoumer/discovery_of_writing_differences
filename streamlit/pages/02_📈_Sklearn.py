@@ -8,14 +8,23 @@ import plotly.express as px
 import umap
 from joblib import load
 from sklearn.neural_network import MLPClassifier, MLPRegressor
-pipe_nn_encoder = load('../models/pipe_nn_encoder_01.joblib') 
-umap_mnist = load('../models/umap_mnist_01.joblib')
+from pathlib import Path
+
+path = Path(__file__).parent.parent
+
+pipe_nn_encoder = load(path / 'models/pipe_nn_encoder_01.joblib') 
+umap_mnist = load(path / 'models/umap_mnist_01.joblib')
+
+# from pathlib import Path
+
+# path = Path(__file__).parent.parent / 'data/'
+# st.write(path)
 
 # process_text = st.sidebar.text_area('process_text',height=500)
 # nn_represent_newtext = pipe_nn_encoder.predict(process_text)
 # umap_projection_newtext = umap_mnist.transform(nn_represent_newtext)
 
-library_distances2d =  pd.read_pickle('data/library_distances2d.pkl')
+library_distances2d =  pd.read_pickle(path / 'data/library_distances2d.pkl')
 dist2d_mean = library_distances2d.iloc[0]['dist2d_mean']
 
 

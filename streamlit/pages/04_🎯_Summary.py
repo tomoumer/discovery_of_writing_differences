@@ -1,4 +1,7 @@
 import streamlit as st
+from pathlib import Path
+
+path = Path(__file__).parent.parent
 
 st.write('## Summary')
 
@@ -16,7 +19,7 @@ with col1:
     )
 
 with col2:
-    st.image('img/journal.png', use_column_width='auto')
+    st.image(str(path / 'img/journal.png'), use_column_width='auto')
 
 st.markdown(
     """

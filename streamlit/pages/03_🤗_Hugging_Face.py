@@ -6,12 +6,11 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification, Trai
 from datasets import Dataset
 import evaluate
 from scipy import special
+from pathlib import Path
 
-#import os
-#os.environ["TOKENIZERS_PARALLELISM"] = "false"
+path = Path(__file__).parent.parent
 
-
-authors_df = pd.read_pickle('data/select_authors.pkl')
+authors_df = pd.read_pickle(path / 'data/select_authors.pkl')
 
 select_authors = authors_df['author'].to_list()
 
@@ -46,10 +45,10 @@ def compute_metrics(eval_pred):
     }
     return metrics
 
-model = AutoModelForSequenceClassification.from_pretrained('../models/bert_base_uncased/fivebooks_tenparts/')
+model = AutoModelForSequenceClassification.from_pretrained(path / 'models/bert_base_fivebooks_tenparts/')
 
 test_args = TrainingArguments(
-    output_dir= '../models/bert_base_uncased/fivebooks_tenparts/',
+    output_dir= path / 'models/bert_base_fivebooks_tenparts',
     do_train=False,
     do_predict=True,
     per_device_eval_batch_size=4,
