@@ -12,8 +12,8 @@ from pathlib import Path
 
 path = Path(__file__).parent.parent
 
-pipe_nn_encoder = load(path / 'models/pipe_nn_encoder_01.joblib') 
-umap_mnist = load(path / 'models/umap_mnist_01.joblib')
+pipe_nn_encoder = load(str(path / 'models/pipe_nn_encoder_01.joblib')) 
+umap_mnist = load(str(path / 'models/umap_mnist_01.joblib'))
 
 # from pathlib import Path
 
