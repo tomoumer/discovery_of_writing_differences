@@ -52,7 +52,7 @@ test_args = TrainingArguments(
     do_train=False,
     do_predict=True,
     per_device_eval_batch_size=4,
-    use_mps_device=True
+    #use_mps_device=True
 )
 
 trainer = Trainer(
