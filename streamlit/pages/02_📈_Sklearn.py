@@ -12,8 +12,8 @@ from pathlib import Path
 
 path = Path(__file__).parent.parent
 
-pipe_nn_encoder = load(path / 'models/pipe_nn_encoder_01.joblib')
-umap_mnist = load(path / 'models/umap_mnist_01.joblib')
+pipe_nn_encoder = load(path / 'models/pipe_nn_encoder_bigrams.joblib')
+umap_mnist = load(path / 'models/umap_mnist_bigrams.joblib')
 
 # from pathlib import Path
 
@@ -24,7 +24,7 @@ umap_mnist = load(path / 'models/umap_mnist_01.joblib')
 # nn_represent_newtext = pipe_nn_encoder.predict(process_text)
 # umap_projection_newtext = umap_mnist.transform(nn_represent_newtext)
 
-library_distances2d =  pd.read_pickle(path / 'data/library_distances2d.pkl')
+library_distances2d =  pd.read_pickle(path / 'data/library_distances2d_bigrams.pkl')
 dist2d_mean = library_distances2d.iloc[0]['dist2d_mean']
 
 

@@ -249,7 +249,7 @@ with tab5:
             ```
             pipe_nn = Pipeline(
                 steps = [
-                    ('vect', TfidfVectorizer(min_df=2, max_df=0.5, ngram_range=(1,1))),
+                    ('vect', TfidfVectorizer(min_df=2, max_df=0.5, ngram_range=(1,2))),
                     ('scaler', MaxAbsScaler()),
                     ('nn', MLPClassifier(verbose = True, hidden_layer_sizes = (100, 100)))
                 ]
@@ -257,9 +257,8 @@ with tab5:
             ```
             
             1. TfidfVectorizer splits the text into words
-                - CountVectorizer turns the words into vectors (bag of words)
+                - CountVectorizer turns the words into vectors (bag of words, unigrams and bigrams)
                 - TfidfTransformer normalizes the word counts accross documents
-                - note: bigrams don't add enough to justify the added complexity
             2. Scale feature by its maximum absolute value (helps the nn to converge faster)
             3. I used a logistic regression to test and then MLPClassifier with two hidden layers of 100 nodes each
 
